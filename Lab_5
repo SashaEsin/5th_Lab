@@ -1,0 +1,485 @@
+#region Task 1 - 1
+
+static int factorial(int n)
+{
+    int k = 1;
+    for (int i = 1; i <= n; i++)
+    {
+        k *= i;
+    }
+    return k;
+}
+
+Console.WriteLine("Количество способов отбора команды для 8 кандидатов: " + factorial(8) / (factorial(5) * factorial(3)));
+Console.WriteLine("Количество способов отбора команды для 10 кандидатов: " + factorial(10) / (factorial(5) * factorial(5)));
+Console.WriteLine("Количество способов отбора команды для 11 кандидатов: " + factorial(11) / (factorial(5) * factorial(6)));
+
+#endregion
+
+#region Task 1 - 2
+
+static double half_perimetr(double a, double b, double c)
+{
+    return (a + b + c) / 2;
+}
+
+double a1 = 0;
+double b1 = 0;
+double c1 = 0;
+double a2 = 0;
+double b2 = 0;
+double c2 = 0;
+double s1 = 0;
+double s2 = 0;
+int flag = 0;
+try
+{
+    while ((a1 < 0) || (b1 < 0) || (c1 < 0) || (a1 >= b1 + c1) || (b1 >= a1 + c1) || (c1 >= a1 + b1))
+    {
+        Console.WriteLine("Введите стороны первого треугольника");
+        a1 = Convert.ToDouble(Console.ReadLine());
+        b1 = Convert.ToDouble(Console.ReadLine());
+        c1 = Convert.ToDouble(Console.ReadLine());
+        s1 = Math.Sqrt(half_perimetr(a1, b1, c1) * (half_perimetr(a1, b1, c1) - a1) * (half_perimetr(a1, b1, c1) - b1) * (half_perimetr(a1, b1, c1) - c1));
+    }
+
+    while ((a2 < 0) || (b2 < 0) || (c2 < 0) || (a2 >= b2 + c2) || (b2 >= a2 + c2) || (c2 >= a2 + b2))
+    {
+        Console.WriteLine("Введите стороны второго треугольника");
+        a2 = Convert.ToDouble(Console.ReadLine());
+        b2 = Convert.ToDouble(Console.ReadLine());
+        c2 = Convert.ToDouble(Console.ReadLine());
+        s2 = Math.Sqrt(half_perimetr(a2, b2, c2) * (half_perimetr(a2, b2, c2) - a2) * (half_perimetr(a2, b2, c2) - b2) * (half_perimetr(a2, b2, c2) - c2));
+    }
+}
+catch
+{
+    flag = 1;
+}
+
+if (s1 > s2)
+{
+    Console.WriteLine("Первый треугольник больше");
+}
+else
+{
+    if (s2 > s1)
+    {
+        Console.WriteLine("Второй треугольник больше");
+    }
+    else
+    {
+        if (flag == 0)
+        {
+            Console.WriteLine("Они равны");
+        }
+    }
+}
+
+#endregion
+
+#region Task 2 - 6
+static double[] search_max(double[] arr)
+{
+    double max_ = arr[0];
+    int id_max = 0;
+    double[] arr2 = new double[arr.GetLength(0) - 1];
+    for (int i = 1; i < arr.GetLength(0); i++)
+    {
+        if (arr[i] > max_)
+        {
+            max_ = arr[i];
+            id_max = i;
+        }
+    }
+
+    double trash = 0;
+
+    for (int i = 0; i < id_max; i++)
+    {
+        arr2[i] = arr[i];
+    }
+
+    for (int i = id_max; i < arr.GetLength(0) - 1; i++)
+    {
+        arr2[i] = arr[i + 1];
+    }
+
+    return arr2;
+}
+
+double[] arr_a = new double[7];
+double[] arr_b = new double[8];
+flag = 0;
+
+try
+{
+    Console.WriteLine("Введите массив А");
+    for (int i = 0; i < 7; i++)
+    {
+        arr_a[i] = Convert.ToDouble(Console.ReadLine());
+    }
+
+    Console.WriteLine("Введите массив B");
+    for (int i = 0; i < 8; i++)
+    {
+        arr_b[i] = Convert.ToDouble(Console.ReadLine());
+    }
+}
+catch
+{
+    flag = 1;
+}
+
+if (flag == 0)
+{
+    arr_a = search_max(arr_a);
+    arr_b = search_max(arr_b);
+    double[] arr_c = new double[13];
+
+    for (int i = 0; i < 6; i++)
+    {
+        arr_c[i] = arr_a[i];
+    }
+
+    for (int i = 0; i < 7; i++)
+    {
+        arr_c[i + 6] = arr_b[i];
+    }
+
+    Console.WriteLine(String.Join(" ", arr_c));
+}
+#endregion
+
+#region Task 2 - 10
+
+static double[,] delete_colom(double[,] arr2, int id)
+{
+    double[,] arr3 = new double[arr2.GetLength(0), arr2.GetLength(1) - 1];
+    for (int i = 0; i < arr2.GetLength(0); i++)
+    {
+        for (int j = 0; j < id; j++)
+        {
+            arr3[i, j] = arr2[i, j];
+        }
+    }
+
+    for (int i = 0; i < arr2.GetLength(0); i++)
+    {
+        for (int j = id; j < arr3.GetLength(1); j++)
+        {
+            arr3[i, j] = arr2[i, j + 1];
+        }
+    }
+    return arr3;
+}
+
+
+int r;
+flag = 0;
+double max1 = -1 * Math.Pow(10, 10);
+double min1 = Math.Pow(10, 10);
+int id_max = 0;
+int id_min = 0;
+double[,] arr = new double[0, 0];
+try
+{
+    Console.WriteLine("Введите сторону матрицы");
+    r = Convert.ToInt16(Console.ReadLine());
+
+    arr = new double[r, r];
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < r; j++)
+        {
+            arr[i, j] = Convert.ToDouble(Console.ReadLine());
+            if (i >= j)
+            {
+                if (max1 < arr[i, j])
+                {
+                    max1 = arr[i, j];
+                    id_max = j;
+                }
+            }
+
+            if (i <= j)
+            {
+                if (min1 > arr[i, j])
+                {
+                    min1 = arr[i, j];
+                    id_min = j;
+                }
+            }
+        }
+    }
+}
+catch
+{
+    flag = 1;
+    r = 0;
+    id_max = 0;
+    id_min = 0;
+}
+
+if (flag == 0)
+{
+    arr = delete_colom(arr, id_max);
+    if (id_max < id_min)
+    {
+        arr = delete_colom(arr, id_min - 1);
+    }
+    else
+    {
+        arr = delete_colom(arr, id_min);
+    }
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < r - 2; j++)
+        {
+            Console.Write(arr[i, j] + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+#endregion
+
+#region Task - 23
+
+static double[,] five_max(double[,] arr2)
+
+{
+    int t = 0;
+    double[] temp = new double[arr2.GetLength(0) * arr2.GetLength(1)];
+
+    for (int i = 0; i < arr2.GetLength(0); i++)
+    {
+        for (int j = 0; j < arr2.GetLength(1); j++)
+        {
+            temp[t] = arr2[i, j];
+            t++;
+        }
+    }
+
+    Array.Sort(temp);
+    Array.Reverse(temp);
+    double[] m = new double[5];
+
+    for (int i = 0; i < 5; i++)
+    {
+        m[i] = temp[i];
+    }
+    for (int i = 0; i < arr2.GetLength(0); i++)
+    {
+        for (int j = 0; j < arr2.GetLength(1); j++)
+        {
+            if (arr2[i, j] == m[0] || arr2[i, j] == m[1] || arr2[i, j] == m[2] || arr2[i, j] == m[3] || arr2[i, j] == m[4])
+            {
+                arr2[i, j] *= 2;
+            }
+            else
+            {
+                arr2[i, j] /= 2;
+            }
+        }
+    }
+
+    return arr2;
+}
+
+try
+{
+    Console.WriteLine("Введите первый массив");
+    r = Convert.ToInt16(Console.ReadLine());
+    int c = Convert.ToInt16(Console.ReadLine());
+    arr = new double[r, c];
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < c; j++)
+        {
+            arr[i, j] = Convert.ToDouble(Console.ReadLine());
+        }
+    }
+
+    Console.WriteLine("Введите второй массив");
+    r = Convert.ToInt16(Console.ReadLine());
+    c = Convert.ToInt16(Console.ReadLine());
+    double[,] arr2 = new double[r, c];
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < c; j++)
+        {
+            arr[i, j] = Convert.ToDouble(Console.ReadLine());
+        }
+    }
+
+    arr = five_max(arr);
+    arr2 = five_max(arr2);
+
+    Console.WriteLine("Массив 1:");
+    for (int i = 0; i < arr.GetLength(0); i++)
+    {
+        for (int j = 0; j < arr.GetLength(1); j++)
+        {
+            Console.Write(arr[i, j] + " ");
+        }
+        Console.WriteLine();
+    }
+
+    Console.WriteLine("Массив 2:");
+    for (int i = 0; i < arr2.GetLength(0); i++)
+    {
+        for (int j = 0; j < arr2.GetLength(1); j++)
+        {
+            Console.Write(arr2[i, j] + " ");
+        }
+        Console.WriteLine();
+    }
+
+}
+catch
+{
+
+}
+
+
+#endregion
+
+#region Task 3 - 1
+static double sum_progresssion(double st, double end, double step, fi f, fi2 f2)
+{
+    double sum1 = 1;
+    double m2 = 0;
+    int i1 = 1;
+    for (double x2 = st; x2 <= end; x2 += step)
+    {
+        while (true)
+        {
+            m2 = f(x2, i1);
+            sum1 += m2;
+
+            if (Math.Abs(m2) < 0.0001)
+            {
+                Console.WriteLine("Значение функции y = ");
+                Console.Write(f2);
+                break;
+            }
+            i1++;
+        }
+    }
+
+    return sum1;
+
+}
+
+static double intermid_value1(double x, int i2)
+{
+    double m_of_progres = 0;
+    int fuct2 = 1;
+    for (int i = 1; i <= i2; i++)
+    {
+        fuct2 *= i2;
+    }
+    m_of_progres = Math.Cos(i2 * x) / fuct2;
+    return m_of_progres;
+}
+
+static double intermid_value2(double x, int i2)
+{
+    double m_of_progres = 0;
+    m_of_progres = Math.Pow(-1, i2) * Math.Cos(i2 * x) / Math.Pow(i2, 2);
+    return m_of_progres;
+}
+
+static double y1(double x)
+{
+    x = Math.Exp(Math.Cos(x)) * Math.Cos(Math.Sin(x));
+    return x;
+}
+
+static double y2(double x)
+{
+    x = (Math.Pow(x, 2) - Math.Pow(Math.PI, 2) / 3) / 4;
+    return x;
+}
+
+Console.WriteLine(1 + sum_progresssion(0.1, 1, 0.1, intermid_value1, y1));
+Console.WriteLine(sum_progresssion(Math.PI / 5, Math.PI, Math.PI / 25, intermid_value2, y2));
+
+#endregion
+
+#region Task 3 - 2
+
+static double[,] arr_cheack(double[,] arr)
+{
+    double[] arr2 = new double[arr.GetLength(0)];
+    for (int i = 0; i < arr.GetLength(0); i++)
+    {
+        arr2 = new double[arr.GetLength(0)];
+        for (int j = 0; j < arr.GetLength(1); j++)
+        {
+            arr2[j] = arr[i, j];
+        }
+        if (i % 2 == 0)
+        {
+            arr2 = sort_(arr2);
+        }
+        else
+        {
+            arr2 = sort_reverse(arr2);
+        }
+        for (int j = 0; j < arr2.GetLength(0); j++)
+        {
+            arr[i, j] = arr2[j];
+        }
+    }
+    return arr;
+}
+
+static double[] sort_(double[] arr2)
+{
+    Array.Sort(arr2);
+    return arr2;
+}
+
+static double[] sort_reverse(double[] arr2)
+{
+    Array.Sort(arr2);
+    Array.Reverse(arr2);
+    return arr2;
+}
+
+try
+{
+    r = Convert.ToInt16(Console.ReadLine());
+    int colm = Convert.ToInt16(Console.ReadLine());
+
+    double[,] arr3 = new double[r, colm];
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < colm; j++)
+        {
+            arr3[i, j] = Convert.ToDouble(Console.ReadLine());
+        }
+    }
+
+    arr3 = arr_cheack(arr3);
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < colm; j++)
+        {
+            Console.Write(arr3[i, j] + " ");
+        }
+        Console.WriteLine();
+    }
+}
+catch
+{
+
+}
+
+#endregion
+
+
+delegate double fi(double x, int i);
+delegate double fi2(double x);
